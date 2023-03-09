@@ -2,6 +2,18 @@ export const styles = {
     header:{
         width:"100%",
         height:"80px",
-        background:"grey"
+        background:"grey",
+        display:"flex",
+        alignItems:"center",
+        paddingLeft:"24px"
+    },
+    link:{
+        textDecoration:"none",
+        color:"black",
+        fontWeight:"bold",
+        fontSize:"24px"
+    },
+    linkActive:{
+        color:"green"
     }
 }
