@@ -1,3 +1,4 @@
+import { defaultTypeColor } from "@/constants/warehouse";
 import { styles } from "@/styles/Warehouse.styles";
 import { Box, Checkbox, Input, Typography } from "@mui/material";
 import { Fragment, useState } from "react";
@@ -7,7 +8,7 @@ export default function Warehouse() {
     const [whWidth, setWhWidth] = useState(0);
     const [whHeight, setWhHeight] = useState(0);
     const [whLength, setWhLength] = useState(0);
-    const [typesCount, setTypesCount] = useState([{ color: "red",width:"100%",height:"100%"}]);
+    const [typesCount, setTypesCount] = useState([{ color: defaultTypeColor, width: "100%", height: "100%" }]);
     const [distributeIndividually, setDistributeIndividually] = useState(false);
 
 
@@ -54,7 +55,7 @@ export default function Warehouse() {
     const handleCountChange = (event: any) => {
         let arr = [];
         for (let i = 0; i < +event.target.value; i++) {
-            arr.push({ color: "red", width:"100%", height:"100%" });
+            arr.push({ color: defaultTypeColor, width: "100%", height: "100%" });
         };
         setTypesCount(arr);
     };
@@ -72,9 +73,7 @@ export default function Warehouse() {
                 <Input onChange={(event) => handleChange(event, setWhHeight)} />
                 <Typography>Warehouse Length</Typography>
                 <Input onChange={(event) => handleChange(event, setWhLength)} />
-                <Box sx={{
-                    display: "flex"
-                }}>
+                <Box sx={styles.flex}>
                     <Box>
                         <Typography>Product Types</Typography>
                         <Input onChange={handleCountChange} />
@@ -87,15 +86,13 @@ export default function Warehouse() {
                 {typesCount.map((item, index) => {
                     return (
                         <Fragment key={index + 1}>
-                            <Box sx={{ display: "flex" }}>
+                            <Box sx={styles.flex}>
                                 <Box>
                                     <Typography>Type color</Typography>
-                                    <Input defaultValue="red" onChange={(event) => handleColorChange(event, index)} />
+                                    <Input defaultValue={defaultTypeColor} onChange={(event) => handleColorChange(event, index)} />
                                 </Box>
                                 {distributeIndividually &&
-                                    <Box sx={{
-                                        display:"flex"
-                                    }}>
+                                    <Box sx={styles.flex}>
                                         <Box>
                                             <Typography>Type width</Typography>
                                             <Input onChange={(event) => handleWidthChange(event, index)} />
@@ -112,10 +109,7 @@ export default function Warehouse() {
                 })}
             </Box>
             <Box sx={styles.warehouseViewBlock}>
-                <Typography sx={{
-                    position: "absolute",
-                    top: "20px"
-                }}>{`${whWidth}x${whLength}x${whHeight}`}</Typography>
+                <Typography sx={styles.warehouseViewBlockWrapper}>{`${whWidth}x${whLength}x${whHeight}`}</Typography>
                 <Box sx={{
                     width: `${whWidth}px`,
                     height: `${whLength}px`,
