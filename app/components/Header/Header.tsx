@@ -15,9 +15,7 @@ const Header = () => {
                 display:"flex",
                 gap:"24px"
             }}>
-                {links.map((item, index) => {
-                    console.log(router.asPath == item.slug,"is active");
-                    
+                {links.map((item, index) => {                    
                     return (
                         <Fragment key={index}>
                             <Link 

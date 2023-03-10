@@ -4,13 +4,17 @@ export const styles = {
         height:"100%"
     },
     warehouseInfoBlock:{
-        background:"red",
-        width:"100%",
-        height:"100%"
+        width:"70%",
+        height:"100%",
+        padding:"24px"
     },
     warehouseViewBlock:{
-        background:"green",
         width:"100%",
-        height:"100%"
+        height:"100%",
+        borderLeft:"1px solid black",
+        display:"flex",
+        justifyContent:"center",
+        alignItems:"center",
+        position:"relative"
     }
 };
