@@ -1,0 +1,22 @@
+{
+  "kind": "collectionType",
+  "collectionName": "receipts",
+  "info": {
+    "singularName": "receipt",
+    "pluralName": "receipts",
+    "displayName": "Receipt",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "product": {
+      "displayName": "product",
+      "type": "component",
+      "repeatable": true,
+      "component": "product.product"
+    }
+  }
+}

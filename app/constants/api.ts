@@ -1,0 +1,1 @@
+export const CMS_API_OWN:string = "http://localhost:3000/api/cms";
