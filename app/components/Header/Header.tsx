@@ -1,4 +1,4 @@
-import { links } from "@/constants/links";
+import { routes } from "@/constants/routes";
 import { Box } from "@mui/material"
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -15,12 +15,12 @@ const Header = () => {
                 display:"flex",
                 gap:"24px"
             }}>
-                {links.map((item, index) => {                    
+                {routes.map((item, index) => {                    
                     return (
                         <Fragment key={index}>
                             <Link 
                             href={item.slug} 
-                            style={router.asPath == item.slug ? {...styles.link,...styles.linkActive} : styles.link}
+                            style={router.asPath == item.slug ? {...styles.route,...styles.routeActive} : styles.route}
                             >{item.title}</Link>
                         </Fragment>
                     )

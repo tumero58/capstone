@@ -2,18 +2,18 @@ export const styles = {
     header:{
         width:"100%",
         height:"80px",
-        background:"grey",
+        borderBottom:"2px solid blue",
         display:"flex",
         alignItems:"center",
         paddingLeft:"24px"
     },
-    link:{
+    route:{
         textDecoration:"none",
         color:"black",
         fontWeight:"bold",
         fontSize:"24px"
     },
-    linkActive:{
-        color:"green"
+    routeActive:{
+        color:"blue"
     }
 }

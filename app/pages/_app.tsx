@@ -1,5 +1,4 @@
 import '@/styles/globals.css'
-import Footer from '@/components/Footer/Footer'
 import Header from '@/components/Header/Header'
 import { styles } from '@/styles/App.styles'
 import { Box } from '@mui/material'
@@ -20,7 +19,6 @@ export default function App({ Component, pageProps }: AppProps) {
       <Box sx={styles.body}>
         <Component {...pageProps} />
       </Box>
-      <Footer />
     </Box>
     </>
   )
