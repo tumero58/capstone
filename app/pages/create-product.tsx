@@ -1,4 +1,6 @@
+import { CMS_API, CMS_PRODUCTS, CMS_PRODUCTS_REF, CMS_UPLOAD, IMAGE_FIELD } from '@/constants/cms';
 import { styles } from '@/styles/CreateProduct.styles';
+import { handleRequest, METHODS } from '@/utils/handleRequest';
 import { Box, Button, Checkbox, Input, Typography } from '@mui/material';
 import { ChangeEvent, useState } from 'react';
 
@@ -12,7 +14,7 @@ export default function CreateProduct() {
     const [buyPrice, setBuyPrice] = useState(0);
     const [sellPrice, setSellPrice] = useState(0);
     const [maxCapacity, setMaxCapacity] = useState(0);
-    const [minCapacity, setMinCapacity] = useState(0);
+    const [minAmount, setMinAmount] = useState(0);
     const [orderAutiomation, setOrderAutomation] = useState(false);
     const [files, setFiles] = useState([]);
 
@@ -24,14 +26,51 @@ export default function CreateProduct() {
         buyPrice,
         sellPrice,
         maxCapacity,
-        minCapacity,
+        minAmount,
         orderAutiomation,
         files
     });
-    
+
 
 
     const handleClick = async () => {
+        const postRes = await handleRequest(`${CMS_API}${CMS_PRODUCTS}`, METHODS.POST, {
+            "data": {
+                "name": name,
+                "amount": amount,
+                "supplier": supplier,
+                "bio": bio,
+                "buyPrice": buyPrice,
+                "sellPrice": sellPrice,
+                "maximumCapacity": maxCapacity,
+                "minimumAmount": minAmount,
+                "orderAutiomation": orderAutiomation,
+                "files": files
+            }
+        });
+        const id = postRes.data.id;
+        const imageFile = files[0];
+        if (postRes.data) {
+            if (imageFile) {
+                const formData = new FormData();
+                formData.append("ref", CMS_PRODUCTS_REF);
+                formData.append("refId", id);
+                formData.append("field", IMAGE_FIELD);
+                formData.append("files", imageFile);
+                const postRes = await fetch(`${CMS_API}${CMS_UPLOAD}`, {
+                    method: METHODS.POST,
+                    body: formData
+                });
+                if (postRes.ok) {
+                    alert("Product successfully created!!!");
+                } else {
+                    alert("There was a problem with image")
+                }
+            } else {
+                alert("Product successfully created!!!");
+            }
+        }
+        console.log(postRes, "POSTRES");
         // await createProduct(title, description, raiseAmount, files[0]);
         console.log("clicked");
     };
@@ -44,7 +83,7 @@ export default function CreateProduct() {
         setFiles(e.target.files);
     };
 
-    const handleCheckBox = (e: ChangeEvent<HTMLInputElement>)=>{
+    const handleCheckBox = (e: ChangeEvent<HTMLInputElement>) => {
         setOrderAutomation(e.target.checked);
     };
 
@@ -81,14 +120,14 @@ export default function CreateProduct() {
                 </Box>
                 <Box>
                     <Typography>Minimum Capacity</Typography>
-                    <Input type='number' onChange={(e) => { handleChange(e, setMinCapacity) }} />
+                    <Input type='number' onChange={(e) => { handleChange(e, setMinAmount) }} />
                 </Box>
                 <Box>
                     <Typography>Order Automation</Typography>
                     <Checkbox onChange={(e) => { handleCheckBox(e) }} />
                 </Box>
                 <Box>
-                    <Typography>Minimum Capacity</Typography>
+                    <Typography>Order Automation</Typography>
                     <Input type='file' onChange={handleFileChange} />
                 </Box>
 
