@@ -8,9 +8,9 @@ export default async function handler({ body: {
     bio,
     buyPrice,
     sellPrice,
-    maxCapacity,
-    minAmount,
-    orderAutiomation
+    maximumCapacity,
+    minimumAmount,
+    orderAutomation
 } = {} }: NextApiRequest, res: NextApiResponse) {
     try {
         const productId = await postProductCMS(
@@ -20,9 +20,9 @@ export default async function handler({ body: {
             bio,
             buyPrice,
             sellPrice,
-            maxCapacity,
-            minAmount,
-            orderAutiomation
+            maximumCapacity,
+            minimumAmount,
+            orderAutomation
         )
         res.json(productId);
     } catch {

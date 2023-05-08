@@ -12,9 +12,9 @@ export default function CreateProduct() {
     const [bio, setBio] = useState("");
     const [buyPrice, setBuyPrice] = useState(0);
     const [sellPrice, setSellPrice] = useState(0);
-    const [maxCapacity, setMaxCapacity] = useState(0);
-    const [minAmount, setMinAmount] = useState(0);
-    const [orderAutiomation, setOrderAutomation] = useState(false);
+    const [maximumCapacity, setMaximumCapacity] = useState(0);
+    const [minimumAmount, setMinimumAmount] = useState(0);
+    const [orderAutomation, setOrderAutomation] = useState(false);
     const [files, setFiles] = useState([]);
 
     const handleClick = async () => {
@@ -25,9 +25,9 @@ export default function CreateProduct() {
             bio,
             buyPrice,
             sellPrice,
-            maxCapacity,
-            minAmount,
-            orderAutiomation,
+            maximumCapacity,
+            minimumAmount,
+            orderAutomation,
             files
         );
     };
@@ -73,11 +73,11 @@ export default function CreateProduct() {
                 </Box>
                 <Box>
                     <Typography>Maximum Capacity</Typography>
-                    <Input type='number' onChange={(e) => { handleChange(e, setMaxCapacity) }} />
+                    <Input type='number' onChange={(e) => { handleChange(e, setMaximumCapacity) }} />
                 </Box>
                 <Box>
                     <Typography>Minimum Capacity</Typography>
-                    <Input type='number' onChange={(e) => { handleChange(e, setMinAmount) }} />
+                    <Input type='number' onChange={(e) => { handleChange(e, setMinimumAmount) }} />
                 </Box>
                 <Box>
                     <Typography>Order Automation</Typography>

@@ -8,21 +8,21 @@ export const postProductCMS = async (
     bio: string,
     buyPrice: number,
     sellPrice: number,
-    maxCapacity: number,
-    minAmount: number,
-    orderAutiomation: boolean
+    maximumCapacity: number,
+    minimumAmount: number,
+    orderAutomation: boolean
 ) => {
     const postRes = await handleRequest(`${CMS_API}${CMS_PRODUCTS}`, METHODS.POST, {
         "data": {
-            "name": name,
-            "amount": amount,
-            "supplier": supplier,
-            "bio": bio,
-            "buyPrice": buyPrice,
-            "sellPrice": sellPrice,
-            "maximumCapacity": maxCapacity,
-            "minimumAmount": minAmount,
-            "orderAutomation": orderAutiomation
+            name,
+            amount,
+            supplier,
+            bio,
+            buyPrice,
+            sellPrice,
+            maximumCapacity,
+            minimumAmount,
+            orderAutomation
         }
     });
     return postRes.data.id;
