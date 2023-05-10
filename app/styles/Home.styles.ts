@@ -26,7 +26,7 @@ export const homeStyles = {
         justifyContent: "center",
         alignItems: "center",
         border: "1px solid #000000",
-        borderRadius: "32px"
+        borderRadius: "24px"
     },
     routeText:{
         fontWeight: 700,

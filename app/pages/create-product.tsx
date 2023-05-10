@@ -47,52 +47,52 @@ export default function CreateProduct() {
     return (
         <>
             <Box sx={styles.wrapper}>
-                <Box>
-                    <Typography>Name</Typography>
-                    <Input onChange={(e) => { handleChange(e, setName) }} />
+                <Box sx={styles.input}>
+                    <Typography sx={styles.inputText}>Name</Typography>
+                    <Input onChange={(e) => { handleChange(e, setName) }} sx={styles.inputContent} />
                 </Box>
-                <Box>
-                    <Typography>Amount</Typography>
-                    <Input type='number' onChange={(e) => { handleChange(e, setAmount) }} />
+                <Box sx={styles.input}>
+                    <Typography sx={styles.inputText}>Amount</Typography>
+                    <Input type='number' onChange={(e) => { handleChange(e, setAmount) }} sx={styles.inputContent} />
                 </Box>
-                <Box>
-                    <Typography>Supplier</Typography>
-                    <Input onChange={(e) => { handleChange(e, setSupplier) }} />
+                <Box sx={styles.input}>
+                    <Typography sx={styles.inputText}>Supplier</Typography>
+                    <Input onChange={(e) => { handleChange(e, setSupplier) }} sx={styles.inputContent} />
                 </Box>
-                <Box>
-                    <Typography>Bio</Typography>
-                    <Input onChange={(e) => { handleChange(e, setBio) }} />
+                <Box sx={styles.input}>
+                    <Typography sx={styles.inputText}>Bio</Typography>
+                    <Input onChange={(e) => { handleChange(e, setBio) }} sx={styles.inputContent} />
                 </Box>
-                <Box>
-                    <Typography>Buy Price</Typography>
-                    <Input type='number' onChange={(e) => { handleChange(e, setBuyPrice) }} />
+                <Box sx={styles.input}>
+                    <Typography sx={styles.inputText}>Buy Price</Typography>
+                    <Input type='number' onChange={(e) => { handleChange(e, setBuyPrice) }} sx={styles.inputContent} />
                 </Box>
-                <Box>
-                    <Typography>Sell Price</Typography>
-                    <Input type='number' onChange={(e) => { handleChange(e, setSellPrice) }} />
+                <Box sx={styles.input}>
+                    <Typography sx={styles.inputText}>Sell Price</Typography>
+                    <Input type='number' onChange={(e) => { handleChange(e, setSellPrice) }} sx={styles.inputContent} />
                 </Box>
-                <Box>
-                    <Typography>Maximum Capacity</Typography>
-                    <Input type='number' onChange={(e) => { handleChange(e, setMaximumCapacity) }} />
+                <Box sx={styles.input}>
+                    <Typography sx={styles.inputText}>Maximum Capacity</Typography>
+                    <Input type='number' onChange={(e) => { handleChange(e, setMaximumCapacity) }} sx={styles.inputContent} />
                 </Box>
-                <Box>
-                    <Typography>Minimum Capacity</Typography>
-                    <Input type='number' onChange={(e) => { handleChange(e, setMinimumAmount) }} />
+                <Box sx={styles.input}>
+                    <Typography sx={styles.inputText}>Minimum Capacity</Typography>
+                    <Input type='number' onChange={(e) => { handleChange(e, setMinimumAmount) }} sx={styles.inputContent} />
                 </Box>
-                <Box>
-                    <Typography>Order Automation</Typography>
-                    <Checkbox onChange={(e) => { handleCheckBox(e) }} />
+                <Box sx={styles.input}>
+                    <Typography sx={styles.inputText}>Order Automation</Typography>
+                    <Checkbox onChange={(e) => { handleCheckBox(e) }} sx={styles.inputContent} />
                 </Box>
-                <Box>
-                    <Typography>Order Automation</Typography>
-                    <Input type='file' onChange={handleFileChange} />
+                <Box sx={styles.input}>
+                    <Typography sx={styles.inputText}>Image</Typography>
+                    <Input type='file' onChange={handleFileChange} sx={styles.inputContent} />
                 </Box>
 
                 <Button
                     sx={styles.button}
                     variant='contained'
                     onClick={handleClick}
-                >CREATE A PRODUCT</Button>
+                >Add</Button>
             </Box>
         </>
     )
