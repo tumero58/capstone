@@ -2,6 +2,7 @@ import { ChangeEvent, useState } from 'react';
 import { styles } from '@/styles/CreateProduct.styles';
 import { createProduct } from '@/utils/createProduct';
 import { Box, Button, Checkbox, Input, Typography } from '@mui/material';
+import Header from '@/components/Header/Header';
 
 
 export default function CreateProduct() {
@@ -46,6 +47,7 @@ export default function CreateProduct() {
 
     return (
         <>
+            <Header />
             <Box sx={styles.wrapper}>
                 <Box sx={styles.input}>
                     <Typography sx={styles.inputText}>Name</Typography>
