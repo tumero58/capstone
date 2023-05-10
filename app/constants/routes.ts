@@ -4,7 +4,11 @@ export const routes = [
         slug: "/"
     },
     {
-        title: "Create Product",
+        title: "Products",
+        slug: "/products"
+    },
+    {
+        title: "Add Product",
         slug: "/create-product"
     },
 ];

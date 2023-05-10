@@ -1,26 +1,30 @@
-import { CMS_API_OWN } from '@/constants/api';
-import { handleRequest, METHODS } from '@/utils/handleRequest';
-import { Box, Button, Input } from '@mui/material';
-import { ChangeEvent, useState } from 'react';
+import { routes } from '@/constants/routes';
+import { homeStyles } from '@/styles/Home.styles';
+import { Box, Typography } from '@mui/material';
+import Image from 'next/image';
+import Link from 'next/link';
+import person from "../public/person.png";
 
 export default function Home() {
-  const [field,setField] = useState("");
-
-  const handleChange = (event:ChangeEvent<HTMLInputElement | HTMLTextAreaElement>)=>{
-    setField(event.target.value);
-  };
-
-  const getData = async () => {
-    const products = await handleRequest(CMS_API_OWN,METHODS.POST,{
-      field
-    });
-    console.log(products);
-  };
+  
+  const filteredRoutes = routes.filter(item => item.slug !== "/");
 
   return (
-    <Box>
-      <Input onChange={handleChange}/>
-      <Button onClick={getData}>Get Data</Button>
+    <Box sx={homeStyles.homeWrapper}>
+      <Box sx={homeStyles.contentWrapper}>
+        <Image src={person.src} alt='' width={500} height={500} />
+        <Box sx={homeStyles.routes}>
+          {filteredRoutes.map((item, index) => {
+            return (
+              <Link href={item.slug} key={index + 1}>
+                <Box sx={homeStyles.route}>
+                  <Typography sx={homeStyles.routeText}>{item.title.toUpperCase()}</Typography>
+                </Box>
+              </Link>
+            )
+          })}
+        </Box>
+      </Box>
     </Box>
   )
 }
