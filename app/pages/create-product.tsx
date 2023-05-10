@@ -22,8 +22,12 @@ export async function getStaticProps() {
     };
 }
 
+interface ICreateProduct {
+    wallet: IWallet;
+};
 
-export default function CreateProduct({ wallet }: { wallet: IWallet }) {
+
+export default function CreateProduct({ wallet }: ICreateProduct) {
     const [name, setName] = useState("");
     const [amount, setAmount] = useState(0);
     const [supplier, setSupplier] = useState("");
