@@ -2,6 +2,9 @@ export const productsStyles = {
     productsWrapper: {
         paddingY: "32px",
         paddingX: "205px",
+        display: "flex",
+        flexDirection: "column",
+        gap: "46px"
     },
     searchInput: {
         width: "304px",

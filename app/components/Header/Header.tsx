@@ -6,6 +6,7 @@ import { Fragment } from "react";
 import { styles } from "./Header.styles";
 import notification from "../../public/notification.png";
 import Image from "next/image";
+import { CURRENCY } from "@/constants/general";
 
 interface IHeader {
     walletName: string;
@@ -34,7 +35,7 @@ const Header = ({ walletName, walletBalance }: IHeader) => {
                     </Box>
                     <Box sx={styles.headerSection}>
                         <Typography sx={styles.route}>{walletName}</Typography>
-                        <Typography sx={styles.route}>{walletBalance}</Typography>
+                        <Typography sx={styles.route}>{walletBalance} {CURRENCY}</Typography>
                         <Image src={notification.src} alt="" width={48} height={48} />
                     </Box>
                 </Box>

@@ -6,6 +6,7 @@ import Header from '@/components/Header/Header';
 import { handleRequest, METHODS } from '@/utils/handleRequest';
 import { CMS_API, CMS_WALLET } from '@/constants/cms';
 import { IWallet } from '@/interfaces/Iwallet';
+import { ADD } from '@/constants/general';
 
 export async function getStaticProps() {
     const { data = [] } = await handleRequest(`${CMS_API}${CMS_WALLET}`, METHODS.GET) ?? {};
@@ -115,7 +116,7 @@ export default function CreateProduct({ wallet }: ICreateProduct) {
                     sx={styles.button}
                     variant='contained'
                     onClick={handleClick}
-                >Add</Button>
+                >{ADD}</Button>
             </Box>
         </>
     )
