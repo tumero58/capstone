@@ -3,10 +3,27 @@ import { styles } from '@/styles/CreateProduct.styles';
 import { createProduct } from '@/utils/createProduct';
 import { Box, Button, Checkbox, Input, Typography } from '@mui/material';
 import Header from '@/components/Header/Header';
+import { handleRequest, METHODS } from '@/utils/handleRequest';
+import { CMS_API, CMS_WALLET } from '@/constants/cms';
+import { IWallet } from '@/interfaces/Iwallet';
+
+export async function getStaticProps() {
+    const { data = [] } = await handleRequest(`${CMS_API}${CMS_WALLET}`, METHODS.GET) ?? {};
+
+    const wallet: IWallet = {
+        name: data.attributes.name,
+        balance: data.attributes.balance
+    } || {}
+
+    return {
+        props: {
+            wallet
+        }
+    };
+}
 
 
-export default function CreateProduct() {
-
+export default function CreateProduct({ wallet }: { wallet: IWallet }) {
     const [name, setName] = useState("");
     const [amount, setAmount] = useState(0);
     const [supplier, setSupplier] = useState("");
@@ -47,7 +64,7 @@ export default function CreateProduct() {
 
     return (
         <>
-            <Header />
+            <Header walletName={wallet.name} walletBalance={wallet.balance} />
             <Box sx={styles.wrapper}>
                 <Box sx={styles.input}>
                     <Typography sx={styles.inputText}>Name</Typography>

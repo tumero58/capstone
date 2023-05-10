@@ -2,6 +2,7 @@ export const CMS_API: string = "http://localhost:1337/api";
 export const CMS_PRODUCTS: string = "/products";
 export const CMS_NOTIFICATIONS: string = "/notifications";
 export const CMS_RECEIPTS: string = "/receipts";
+export const CMS_WALLET: string = "/wallet";
 export const CMS_PRODUCTS_REF: string = "api::product.product";
 export const IMAGE_FIELD: string = "image";
 export const CMS_UPLOAD: string = "/upload";

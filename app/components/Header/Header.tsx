@@ -7,7 +7,12 @@ import { styles } from "./Header.styles";
 import notification from "../../public/notification.png";
 import Image from "next/image";
 
-const Header = () => {
+interface IHeader {
+    walletName: string;
+    walletBalance: string;
+}
+
+const Header = ({ walletName, walletBalance }: IHeader) => {
 
     const router = useRouter();
 
@@ -28,8 +33,8 @@ const Header = () => {
                         })}
                     </Box>
                     <Box sx={styles.headerSection}>
-                        <Typography sx={styles.route}>NAME</Typography>
-                        <Typography sx={styles.route}>BALANCE</Typography>
+                        <Typography sx={styles.route}>{walletName}</Typography>
+                        <Typography sx={styles.route}>{walletBalance}</Typography>
                         <Image src={notification.src} alt="" width={48} height={48} />
                     </Box>
                 </Box>
