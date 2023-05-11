@@ -12,10 +12,7 @@ export const handleRequest = async (url: string, method: string, data?: {}) => {
     }
     catch (error) {
         console.log(error, "error");
-
-    } finally {
-        console.log("Call complete");
-    }
+    };
 };
 
 export const METHODS = Object.freeze({
