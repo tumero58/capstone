@@ -4,7 +4,7 @@ import { Box, Button, Typography } from "@mui/material";
 import { Fragment, useState } from "react";
 import { styles } from "./ProductsWrapper.styles";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import { EXPORT } from "@/constants/general";
+import { EXPORT, EXPORT_PRODUCTS_EMPTY_TEXT } from "@/constants/general";
 
 interface IProdcutsWrapper {
     products: IProduct[];
@@ -21,7 +21,16 @@ export const ProductsWrapper = ({ products }: IProdcutsWrapper): JSX.Element => 
         };
     })
 
-    const [exportProducts, setExportProducts] = useState(productAmounts);
+    const productAmountZero = productAmounts.map((item) => {
+        return {
+            id: item.id,
+            amount: "0",
+            name: item.name,
+            price: item.price
+        }
+    })
+
+    const [exportProducts, setExportProducts] = useState(productAmountZero);
 
     const handleAmountUp = ({ id, amount }: { id: string, amount: string }) => {
         const currentProduct = productAmounts.find(product => product.id === id);
@@ -71,8 +80,12 @@ export const ProductsWrapper = ({ products }: IProdcutsWrapper): JSX.Element => 
         };
     };
 
-    console.log(exportProducts, "prod amount");
-
+    const handleExport = () => {
+        const filteredExportProducts = exportProducts.filter(item => Number(item.amount) !== 0);
+        if (filteredExportProducts.length === 0) {
+            alert(EXPORT_PRODUCTS_EMPTY_TEXT);
+        }
+    };
 
     return (
         <Box sx={styles.productsWrapper}>
@@ -106,7 +119,8 @@ export const ProductsWrapper = ({ products }: IProdcutsWrapper): JSX.Element => 
             <Button
                 sx={styles.button}
                 variant='contained'
+                onClick={handleExport}
             >{EXPORT}</Button>
-        </Box>
+        </Box >
     )
 };
