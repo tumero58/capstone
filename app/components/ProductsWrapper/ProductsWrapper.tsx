@@ -24,7 +24,7 @@ export const ProductsWrapper = ({ products }: IProdcutsWrapper): JSX.Element => 
                                 <Box sx={styles.counterWrapper}>
                                     <PlayArrowIcon sx={styles.arrowUp} />
                                     <Box sx={styles.counter}>
-                                        <Typography>0</Typography>
+                                        <Typography>{item.maximumCapacity}</Typography>
                                     </Box>
                                     <PlayArrowIcon sx={styles.arrowDown} />
                                 </Box>
