@@ -15,7 +15,9 @@ export const ProductsWrapper = ({ products }: IProdcutsWrapper): JSX.Element => 
     const productAmounts = products.map((item) => {
         return {
             id: item.id,
-            amount: item.amount
+            amount: item.amount,
+            name: item.name,
+            price: item.sellPrice
         };
     })
 
@@ -31,12 +33,14 @@ export const ProductsWrapper = ({ products }: IProdcutsWrapper): JSX.Element => 
                 if (replaceProduct) {
                     const replaceProductIndex = exportProducts.indexOf(replaceProduct);
                     if (replaceProductIndex !== -1) {
-                        const newExportProductsAmount = exportProducts;
-                        newExportProductsAmount[replaceProductIndex] = {
+                        const newExportProducts = exportProducts;
+                        newExportProducts[replaceProductIndex] = {
                             id: replaceProduct.id,
-                            amount: (Number(replaceProduct.amount) + 1).toString()
+                            amount: (Number(replaceProduct.amount) + 1).toString(),
+                            name: replaceProduct.name,
+                            price: replaceProduct.price
                         };
-                        setExportProducts([...newExportProductsAmount]);
+                        setExportProducts([...newExportProducts]);
                     };
                 };
             };
@@ -53,12 +57,14 @@ export const ProductsWrapper = ({ products }: IProdcutsWrapper): JSX.Element => 
                 if (replaceProduct) {
                     const replaceProductIndex = exportProducts.indexOf(replaceProduct);
                     if (replaceProductIndex !== -1) {
-                        const newExportProductsAmount = exportProducts;
-                        newExportProductsAmount[replaceProductIndex] = {
+                        const newExportProducts = exportProducts;
+                        newExportProducts[replaceProductIndex] = {
                             id: replaceProduct.id,
-                            amount: (Number(replaceProduct.amount) - 1).toString()
+                            amount: (Number(replaceProduct.amount) - 1).toString(),
+                            name: replaceProduct.name,
+                            price: replaceProduct.price
                         };
-                        setExportProducts([...newExportProductsAmount]);
+                        setExportProducts([...newExportProducts]);
                     };
                 };
             };
