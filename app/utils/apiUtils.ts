@@ -10,7 +10,7 @@ export const postProduct = async (
     sellPrice: number,
     maximumCapacity: number,
     minimumAmount: number,
-    orderAutiomation: boolean
+    orderAutomation: boolean
 ) => {
     const productId = await handleRequest(CREATE_PRODUCT_API, METHODS.POST, {
         name,
@@ -21,7 +21,7 @@ export const postProduct = async (
         sellPrice,
         maximumCapacity,
         minimumAmount,
-        orderAutiomation
+        orderAutomation
     });
     return productId;
 };

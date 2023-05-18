@@ -13,7 +13,7 @@ export const createProduct = async (
     sellPrice = 0,
     maximumCapacity = 0,
     minimumAmount = 0,
-    orderAutiomation = false,
+    orderAutomation = false,
     files = [],
     wallet: IWallet
 ) => {
@@ -27,7 +27,7 @@ export const createProduct = async (
             sellPrice,
             maximumCapacity,
             minimumAmount,
-            orderAutiomation
+            orderAutomation
         );
         const walletRes = await handleRequest(`${CMS_API}${CMS_WALLET}`, METHODS.PUT, {
             "data": {
