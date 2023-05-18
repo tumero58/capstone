@@ -4,7 +4,7 @@ import { Box, Button, Typography } from "@mui/material";
 import { Fragment, useState } from "react";
 import { styles } from "./ProductsWrapper.styles";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import { EXPORT, EXPORT_PRODUCTS_EMPTY_TEXT } from "@/constants/general";
+import { CURRENCY, EXPORT, EXPORT_PRODUCTS_EMPTY_TEXT } from "@/constants/general";
 import Link from "next/link";
 import { PRODUCTS } from "@/constants/routes";
 import { useRouter } from "next/router";
@@ -47,6 +47,11 @@ export const ProductsWrapper = ({ products, wallet }: IProdcutsWrapper): JSX.Ele
     })
 
     const [exportProducts, setExportProducts] = useState(productAmountZero);
+    const [receiptProducts, setReceiptProducts] = useState(productAmountZero);
+    const [openReceipt, setOpenReceipt] = useState(false);
+    const [totalAmount, setTotalAmount] = useState(0);
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [totalProfit, setTotalProfit] = useState(0);
 
     const handleAmountUp = (e: any, { id, amount }: { id: string, amount: string }) => {
         e.stopPropagation();
@@ -110,7 +115,20 @@ export const ProductsWrapper = ({ products, wallet }: IProdcutsWrapper): JSX.Ele
         const filteredExportProducts = exportProducts.filter(item => Number(item.amount) !== 0);
         if (filteredExportProducts.length === 0) {
             alert(EXPORT_PRODUCTS_EMPTY_TEXT);
+            return;
         } else {
+            setReceiptProducts(filteredExportProducts);
+            let totalAmount: number = 0;
+            let totalPrice: number = 0;
+            let totalProfit: number = 0;
+            filteredExportProducts.forEach((item) => {
+                totalAmount += Number(item.amount);
+                totalPrice += Number(item.price);
+                totalProfit += (Number(item.price) - Number(item.buyPrice)) * Number(item.amount);
+            });
+            setTotalAmount(totalAmount);
+            setTotalPrice(totalPrice);
+            setTotalProfit(totalProfit);
             const CMSProducts = filteredExportProducts.map((item) => {
                 return {
                     productName: item.name,
@@ -167,6 +185,7 @@ export const ProductsWrapper = ({ products, wallet }: IProdcutsWrapper): JSX.Ele
                         };
                     })
                     alert("Successfully exported");
+                    setOpenReceipt(true);
                 } else {
                     alert("Something went wrong");
                 }
@@ -176,42 +195,78 @@ export const ProductsWrapper = ({ products, wallet }: IProdcutsWrapper): JSX.Ele
 
     const handleRedirect = (id: string) => {
         router.push(`${PRODUCTS}/${id}`);
-    }
-
+    };
+    
     return (
-        <Box sx={styles.productsWrapper}>
-            {products.map((item: IProduct) => {
-                const currentProduct = exportProducts.find(product => product.id === item.id);
-                if (currentProduct) {
-                    return (
-                        <Fragment key={item.id}>
-                            <Box sx={styles.product} onClick={() => { handleRedirect(item.id) }}>
-                                <Box>
-                                    <Typography sx={styles.productText}>{item.name.toUpperCase()}: {item.amount}</Typography>
-                                </Box>
-                                <Box sx={styles.productInfoWrapper}>
-                                    <Box sx={styles.counterWrapper}>
-                                        <PlayArrowIcon sx={styles.arrowUp} onClick={(e) => { handleAmountUp(e, currentProduct) }} />
-                                        <Box sx={styles.counter}>
-                                            <Typography>{currentProduct.amount}</Typography>
-                                        </Box>
-                                        <PlayArrowIcon sx={styles.arrowDown} onClick={(e) => { handleAmountDown(e, currentProduct) }} />
-                                    </Box>
-                                    <Box sx={{
-                                        ...styles.productImage,
-                                        backgroundImage: `url(${CMS_URL}${item.image})`,
-                                    }}></Box>
-                                </Box>
+        <Box>
+            {openReceipt ?
+                <Box sx={styles.receipt}>
+                    <Box sx={styles.receiptContent}>
+                        <Box sx={styles.closeButton}>
+                            <Typography sx={styles.closeIcon}
+                                onClick={() => { setOpenReceipt(false) }}>
+                                X
+                            </Typography>
+                        </Box>
+                        <Box sx={styles.receiptBox}>
+                            <Box sx={styles.receiptRow}>
+                                <Typography sx={styles.receiptMainRow}>Name</Typography>
+                                <Typography sx={styles.receiptMainRow}>Amount</Typography>
+                                <Typography sx={styles.receiptMainRow}>Price</Typography>
                             </Box>
-                        </Fragment>
-                    )
-                }
-            })}
-            <Button
-                sx={styles.button}
-                variant='contained'
-                onClick={handleExport}
-            >{EXPORT}</Button>
-        </Box >
+                            {receiptProducts.map((item, index) =>
+                                <Box sx={styles.receiptRow} key={index + 1}>
+                                    <Typography sx={styles.receiptRowText}>{item.name}</Typography>
+                                    <Typography sx={styles.receiptRowText}>{item.amount}</Typography>
+                                    <Typography sx={styles.receiptRowText}>{item.price} $</Typography>
+                                </Box>
+                            )}
+                            <Box sx={styles.line}></Box>
+                            <Box sx={styles.receiptRow}>
+                                <Typography sx={styles.receiptRowText}>Total</Typography>
+                                <Typography sx={styles.receiptRowText}>{totalAmount}</Typography>
+                                <Typography sx={styles.receiptRowText}>{totalPrice} $</Typography>
+                            </Box>
+                            <Box>
+                                <Typography sx={styles.receiptRowText}>Profit: {totalProfit} $</Typography>
+                            </Box>
+                        </Box>
+                    </Box>
+                </Box> : <></>}
+            <Box sx={styles.productsWrapper}>
+                {products.map((item: IProduct) => {
+                    const currentProduct = exportProducts.find(product => product.id === item.id);
+                    if (currentProduct) {
+                        return (
+                            <Fragment key={item.id}>
+                                <Box sx={styles.product} onClick={() => { handleRedirect(item.id) }}>
+                                    <Box>
+                                        <Typography sx={styles.productText}>{item.name.toUpperCase()}: {item.amount}</Typography>
+                                    </Box>
+                                    <Box sx={styles.productInfoWrapper}>
+                                        <Box sx={styles.counterWrapper}>
+                                            <PlayArrowIcon sx={styles.arrowUp} onClick={(e) => { handleAmountUp(e, currentProduct) }} />
+                                            <Box sx={styles.counter}>
+                                                <Typography>{currentProduct.amount}</Typography>
+                                            </Box>
+                                            <PlayArrowIcon sx={styles.arrowDown} onClick={(e) => { handleAmountDown(e, currentProduct) }} />
+                                        </Box>
+                                        <Box sx={{
+                                            ...styles.productImage,
+                                            backgroundImage: `url(${CMS_URL}${item.image})`,
+                                        }}></Box>
+                                    </Box>
+                                </Box>
+                            </Fragment>
+                        )
+                    }
+                })}
+                <Button
+                    sx={styles.button}
+                    variant='contained'
+                    onClick={handleExport}
+                >{EXPORT}</Button>
+            </Box >
+        </Box>
     )
 };
