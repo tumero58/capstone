@@ -51,4 +51,21 @@ export const styles = {
             color: "#FFF"
         }
     },
+    notificationMessages: {
+        width: "500px",
+        position: "absolute",
+        right: 50,
+        zIndex: 1,
+        padding: "30px",
+        background: "#C0DDEF",
+        borderRadius: "10px",
+        display: "flex",
+        flexDirection: "column"
+    },
+    notificationMessageText: {
+        color: "#244260",
+        fontWeight: 500,
+        fontSize: "24px",
+        fontFamily: "Montserrat"
+    }
 }

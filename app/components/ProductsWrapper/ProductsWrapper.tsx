@@ -140,13 +140,9 @@ export const ProductsWrapper = ({ products, wallet }: IProdcutsWrapper): JSX.Ele
                 array: CMSProducts
             });
             if (res.id) {
-                let amountSum: number = 0;
-                CMSProducts.forEach((item) => {
-                    amountSum += Number(item.amount) * Number(item.productPrice);
-                });
                 const walletRes = await handleRequest(`${CMS_API}${CMS_WALLET}`, METHODS.PUT, {
                     "data": {
-                        "balance": (Number(wallet.balance) + amountSum).toString()
+                        "balance": (Number(wallet.balance) + totalProfit).toString()
                     }
                 });
                 if (walletRes.data) {

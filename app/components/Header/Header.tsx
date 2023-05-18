@@ -19,6 +19,7 @@ const Header = ({ walletName, walletBalance }: IHeader) => {
 
     const router = useRouter();
     const [notifications, setNotifications] = useState([]);
+    const [openNotification, setOpenNotification] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -26,11 +27,39 @@ const Header = ({ walletName, walletBalance }: IHeader) => {
                 await handleRequest(
                     `${CMS_API}${CMS_NOTIFICATIONS}${POPULATE_ALL}`, METHODS.GET) ?? {};
             if (data.length > 0) {
-                setNotifications(data);
+                const filteredData = data.filter((item: { attributes: { openedStatus: boolean } }) => item.attributes.openedStatus === false);
+                const notifs = filteredData.map((item: {
+                    id: number,
+                    attributes: {
+                        message: String;
+                        openedStatus: boolean;
+                    }
+                }) => {
+                    return {
+                        id: item.id,
+                        message: item.attributes.message,
+                        openedStatus: item.attributes.openedStatus
+                    };
+                }) || [];
+                setNotifications(notifs);
             };
         })();
     }, []);
 
+    const handleNotificationClick = () => {
+        setOpenNotification((state) => !state);
+        notifications.forEach(async (item: {
+            id: number,
+            message: String;
+            openedStatus: boolean;
+        }) => {
+            await handleRequest(`${CMS_API}${CMS_NOTIFICATIONS}/${item.id}`, METHODS.PUT, {
+                "data": {
+                    "openedStatus": true,
+                }
+            });
+        })
+    };
 
     return (
         <>
@@ -51,12 +80,25 @@ const Header = ({ walletName, walletBalance }: IHeader) => {
                     <Box sx={styles.headerSection}>
                         <Typography sx={styles.route}>{walletName}</Typography>
                         <Typography sx={styles.route}>{walletBalance} {CURRENCY}</Typography>
-                        <Box sx={styles.notificationWrapper}>
+                        <Box
+                            sx={styles.notificationWrapper}
+                            onClick={handleNotificationClick}
+                        >
                             <Image src={notification.src} alt="" width={48} height={48} />
                             {notifications.length > 0 ?
                                 <Box sx={styles.notificationCircle}>
                                     <Typography>{notifications.length}</Typography>
-                                </Box> : <></>}
+                                </Box> : <></>
+                            }
+                            {openNotification ? <Box sx={styles.notificationMessages}>
+                                {notifications.map((item: {
+                                    id: number,
+                                    message: String;
+                                    openedStatus: boolean;
+                                }) =>
+                                    <Typography sx={styles.notificationMessageText}>{item.message}</Typography>
+                                )}
+                            </Box> : <></>}
                         </Box>
                     </Box>
                 </Box>
