@@ -24,7 +24,7 @@ const Header = ({ walletName, walletBalance }: IHeader) => {
                     <Box sx={styles.headerSection}>
                         {routes.map((item, index) => {
                             return (
-                                <Fragment key={index}>
+                                <Fragment key={index + 1}>
                                     <Link
                                         href={item.slug}
                                         style={router.asPath == item.slug ? { ...styles.route, ...styles.routeActive } : styles.route}

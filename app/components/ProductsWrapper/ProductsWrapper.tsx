@@ -1,10 +1,12 @@
 import { CMS_URL } from "@/constants/cms";
 import { IProduct } from "@/interfaces/Iproduct";
 import { Box, Button, Typography } from "@mui/material";
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import { styles } from "./ProductsWrapper.styles";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { EXPORT, EXPORT_PRODUCTS_EMPTY_TEXT } from "@/constants/general";
+import Link from "next/link";
+import { PRODUCTS } from "@/constants/routes";
 
 interface IProdcutsWrapper {
     products: IProduct[];
@@ -89,11 +91,11 @@ export const ProductsWrapper = ({ products }: IProdcutsWrapper): JSX.Element => 
 
     return (
         <Box sx={styles.productsWrapper}>
-            {products.map((item: IProduct, index) => {
+            {products.map((item: IProduct) => {
                 const currentProduct = exportProducts.find(product => product.id === item.id);
                 if (currentProduct) {
                     return (
-                        <Fragment key={index + 1}>
+                        <Link href={`${PRODUCTS}/${item.id}`} key={item.id}>
                             <Box sx={styles.product}>
                                 <Box>
                                     <Typography sx={styles.productText}>{item.name.toUpperCase()}</Typography>
@@ -112,7 +114,7 @@ export const ProductsWrapper = ({ products }: IProdcutsWrapper): JSX.Element => 
                                     }}></Box>
                                 </Box>
                             </Box>
-                        </Fragment>
+                        </Link>
                     )
                 }
             })}
