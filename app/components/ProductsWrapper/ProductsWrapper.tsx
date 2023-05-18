@@ -26,6 +26,7 @@ export const ProductsWrapper = ({ products, wallet }: IProdcutsWrapper): JSX.Ele
             amount: item.amount,
             name: item.name,
             price: item.sellPrice,
+            buyPrice: item.buyPrice,
             maxAmount: item.amount,
             minimumAmount: item.minimumAmount,
             orderAutomation: item.orderAutomation
@@ -38,6 +39,7 @@ export const ProductsWrapper = ({ products, wallet }: IProdcutsWrapper): JSX.Ele
             amount: "0",
             name: item.name,
             price: item.price,
+            buyPrice: item.buyPrice,
             maxAmount: item.maxAmount,
             minimumAmount: item.minimumAmount,
             orderAutomation: item.orderAutomation
@@ -63,6 +65,7 @@ export const ProductsWrapper = ({ products, wallet }: IProdcutsWrapper): JSX.Ele
                             amount: (Number(replaceProduct.amount) + 1).toString(),
                             name: replaceProduct.name,
                             price: replaceProduct.price,
+                            buyPrice: replaceProduct.buyPrice,
                             maxAmount: replaceProduct.maxAmount,
                             minimumAmount: replaceProduct.minimumAmount,
                             orderAutomation: replaceProduct.orderAutomation
@@ -91,6 +94,7 @@ export const ProductsWrapper = ({ products, wallet }: IProdcutsWrapper): JSX.Ele
                             amount: (Number(replaceProduct.amount) - 1).toString(),
                             name: replaceProduct.name,
                             price: replaceProduct.price,
+                            buyPrice: replaceProduct.buyPrice,
                             maxAmount: replaceProduct.maxAmount,
                             minimumAmount: replaceProduct.minimumAmount,
                             orderAutomation: replaceProduct.orderAutomation
@@ -136,9 +140,29 @@ export const ProductsWrapper = ({ products, wallet }: IProdcutsWrapper): JSX.Ele
                         });
                         if (putRes.data) {
                             if (Number(item.maxAmount) - Number(item.amount) <= 0) {
-                                await handleRequest(CREATE_NOTIFICATION_API, METHODS.POST, {
-                                    message: `Product: ${item.name} is out of stock`
-                                });
+                                if (item.orderAutomation === false) {
+                                    const notifRes = await handleRequest(CREATE_NOTIFICATION_API, METHODS.POST, {
+                                        message: `Product: ${item.name} is out of stock`
+                                    });
+                                    if (notifRes.id) {
+                                        await handleRequest(`${CMS_API}${CMS_PRODUCTS}/${item.id}`, METHODS.DELETE);
+                                    }
+                                } else {
+                                    if (Number(item.minimumAmount) * Number(item.buyPrice) < Number(wallet.balance)) {
+                                        const walletRes = await handleRequest(`${CMS_API}${CMS_WALLET}`, METHODS.PUT, {
+                                            "data": {
+                                                "balance": (Number(wallet.balance) - Number(item.minimumAmount) * Number(item.buyPrice)).toString()
+                                            }
+                                        });
+                                        if (walletRes.data) {
+                                            await handleRequest(`${CMS_API}${CMS_PRODUCTS}/${item.id}`, METHODS.PUT, {
+                                                "data": {
+                                                    "amount": item.minimumAmount,
+                                                }
+                                            });
+                                        }
+                                    }
+                                };
                             };
                         };
                     })
@@ -163,7 +187,7 @@ export const ProductsWrapper = ({ products, wallet }: IProdcutsWrapper): JSX.Ele
                         <Fragment key={item.id}>
                             <Box sx={styles.product} onClick={() => { handleRedirect(item.id) }}>
                                 <Box>
-                                    <Typography sx={styles.productText}>{item.name.toUpperCase()}</Typography>
+                                    <Typography sx={styles.productText}>{item.name.toUpperCase()}: {item.amount}</Typography>
                                 </Box>
                                 <Box sx={styles.productInfoWrapper}>
                                     <Box sx={styles.counterWrapper}>

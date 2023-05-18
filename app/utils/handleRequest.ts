@@ -18,5 +18,6 @@ export const handleRequest = async (url: string, method: string, data?: {}) => {
 export const METHODS = Object.freeze({
     GET: "GET",
     POST: "POST",
-    PUT: "PUT"
+    PUT: "PUT",
+    DELETE: "DELETE"
 });
