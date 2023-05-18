@@ -71,7 +71,7 @@ export default function Products({ wallet, products }: IProductsPage) {
                     <Image src={searchIcon.src} alt="" height={30} width={30} />
                     <Input sx={productsStyles.searchInputContent} onChange={handleChange} />
                 </Box>
-                <ProductsWrapper products={filteredProducts} />
+                <ProductsWrapper products={filteredProducts} wallet={wallet} />
             </Box>
 
         </>

@@ -1,4 +1,4 @@
-import { CMS_URL } from "@/constants/cms";
+import { CMS_API, CMS_PRODUCTS, CMS_URL, CMS_WALLET } from "@/constants/cms";
 import { IProduct } from "@/interfaces/Iproduct";
 import { Box, Button, Typography } from "@mui/material";
 import { Fragment, useState } from "react";
@@ -9,13 +9,15 @@ import Link from "next/link";
 import { PRODUCTS } from "@/constants/routes";
 import { useRouter } from "next/router";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
-import { CREATE_RECEIPT_API } from "@/constants/api";
+import { CREATE_NOTIFICATION_API, CREATE_RECEIPT_API } from "@/constants/api";
+import { IWallet } from "@/interfaces/Iwallet";
 
 interface IProdcutsWrapper {
     products: IProduct[];
+    wallet: IWallet;
 }
 
-export const ProductsWrapper = ({ products }: IProdcutsWrapper): JSX.Element => {
+export const ProductsWrapper = ({ products, wallet }: IProdcutsWrapper): JSX.Element => {
     const router = useRouter();
 
     const productAmounts = products.map((item) => {
@@ -23,7 +25,10 @@ export const ProductsWrapper = ({ products }: IProdcutsWrapper): JSX.Element => 
             id: item.id,
             amount: item.amount,
             name: item.name,
-            price: item.sellPrice
+            price: item.sellPrice,
+            maxAmount: item.amount,
+            minimumAmount: item.minimumAmount,
+            orderAutomation: item.orderAutomation
         };
     })
 
@@ -32,7 +37,10 @@ export const ProductsWrapper = ({ products }: IProdcutsWrapper): JSX.Element => 
             id: item.id,
             amount: "0",
             name: item.name,
-            price: item.price
+            price: item.price,
+            maxAmount: item.maxAmount,
+            minimumAmount: item.minimumAmount,
+            orderAutomation: item.orderAutomation
         }
     })
 
@@ -54,7 +62,10 @@ export const ProductsWrapper = ({ products }: IProdcutsWrapper): JSX.Element => 
                             id: replaceProduct.id,
                             amount: (Number(replaceProduct.amount) + 1).toString(),
                             name: replaceProduct.name,
-                            price: replaceProduct.price
+                            price: replaceProduct.price,
+                            maxAmount: replaceProduct.maxAmount,
+                            minimumAmount: replaceProduct.minimumAmount,
+                            orderAutomation: replaceProduct.orderAutomation
                         };
                         setExportProducts([...newExportProducts]);
                     };
@@ -79,7 +90,10 @@ export const ProductsWrapper = ({ products }: IProdcutsWrapper): JSX.Element => 
                             id: replaceProduct.id,
                             amount: (Number(replaceProduct.amount) - 1).toString(),
                             name: replaceProduct.name,
-                            price: replaceProduct.price
+                            price: replaceProduct.price,
+                            maxAmount: replaceProduct.maxAmount,
+                            minimumAmount: replaceProduct.minimumAmount,
+                            orderAutomation: replaceProduct.orderAutomation
                         };
                         setExportProducts([...newExportProducts]);
                     };
@@ -104,9 +118,34 @@ export const ProductsWrapper = ({ products }: IProdcutsWrapper): JSX.Element => 
                 array: CMSProducts
             });
             if (res.id) {
-                alert("Successfully exported");
-            } else {
-                alert("Something went wrong");
+                let amountSum: number = 0;
+                CMSProducts.forEach((item) => {
+                    amountSum += Number(item.amount) * Number(item.productPrice);
+                });
+                const walletRes = await handleRequest(`${CMS_API}${CMS_WALLET}`, METHODS.PUT, {
+                    "data": {
+                        "balance": (Number(wallet.balance) + amountSum).toString()
+                    }
+                });
+                if (walletRes.data) {
+                    filteredExportProducts.forEach(async (item) => {
+                        const putRes = await handleRequest(`${CMS_API}${CMS_PRODUCTS}/${item.id}`, METHODS.PUT, {
+                            "data": {
+                                "amount": Number(item.maxAmount) - Number(item.amount),
+                            }
+                        });
+                        if (putRes.data) {
+                            if (Number(item.maxAmount) - Number(item.amount) <= 0) {
+                                await handleRequest(CREATE_NOTIFICATION_API, METHODS.POST, {
+                                    message: `Product: ${item.name} is out of stock`
+                                });
+                            };
+                        };
+                    })
+                    alert("Successfully exported");
+                } else {
+                    alert("Something went wrong");
+                }
             }
         };
     };
