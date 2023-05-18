@@ -51,7 +51,8 @@ export default function CreateProduct({ wallet }: ICreateProduct) {
             maximumCapacity,
             minimumAmount,
             orderAutomation,
-            files
+            files,
+            wallet
         );
     };
 
