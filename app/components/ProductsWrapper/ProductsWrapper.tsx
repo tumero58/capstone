@@ -1,18 +1,22 @@
 import { CMS_URL } from "@/constants/cms";
 import { IProduct } from "@/interfaces/Iproduct";
 import { Box, Button, Typography } from "@mui/material";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { styles } from "./ProductsWrapper.styles";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { EXPORT, EXPORT_PRODUCTS_EMPTY_TEXT } from "@/constants/general";
 import Link from "next/link";
 import { PRODUCTS } from "@/constants/routes";
+import { useRouter } from "next/router";
+import { handleRequest, METHODS } from "@/utils/handleRequest";
+import { CREATE_RECEIPT_API } from "@/constants/api";
 
 interface IProdcutsWrapper {
     products: IProduct[];
 }
 
 export const ProductsWrapper = ({ products }: IProdcutsWrapper): JSX.Element => {
+    const router = useRouter();
 
     const productAmounts = products.map((item) => {
         return {
@@ -34,7 +38,8 @@ export const ProductsWrapper = ({ products }: IProdcutsWrapper): JSX.Element => 
 
     const [exportProducts, setExportProducts] = useState(productAmountZero);
 
-    const handleAmountUp = ({ id, amount }: { id: string, amount: string }) => {
+    const handleAmountUp = (e: any, { id, amount }: { id: string, amount: string }) => {
+        e.stopPropagation();
         const currentProduct = productAmounts.find(product => product.id === id);
         if (currentProduct) {
             if ((Number(amount) + 1) > Number(currentProduct.amount)) {
@@ -58,7 +63,8 @@ export const ProductsWrapper = ({ products }: IProdcutsWrapper): JSX.Element => 
         };
     };
 
-    const handleAmountDown = ({ id, amount }: { id: string, amount: string }) => {
+    const handleAmountDown = (e: any, { id, amount }: { id: string, amount: string }) => {
+        e.stopPropagation();
         const currentProduct = productAmounts.find(product => product.id === id);
         if (currentProduct) {
             if ((Number(amount) - 1) < 0) {
@@ -82,12 +88,32 @@ export const ProductsWrapper = ({ products }: IProdcutsWrapper): JSX.Element => 
         };
     };
 
-    const handleExport = () => {
+    const handleExport = async () => {
         const filteredExportProducts = exportProducts.filter(item => Number(item.amount) !== 0);
         if (filteredExportProducts.length === 0) {
             alert(EXPORT_PRODUCTS_EMPTY_TEXT);
-        }
+        } else {
+            const CMSProducts = filteredExportProducts.map((item) => {
+                return {
+                    productName: item.name,
+                    amount: item.amount,
+                    productPrice: item.price
+                }
+            });
+            const res = await handleRequest(CREATE_RECEIPT_API, METHODS.POST, {
+                array: CMSProducts
+            });
+            if (res.id) {
+                alert("Successfully exported");
+            } else {
+                alert("Something went wrong");
+            }
+        };
     };
+
+    const handleRedirect = (id: string) => {
+        router.push(`${PRODUCTS}/${id}`);
+    }
 
     return (
         <Box sx={styles.productsWrapper}>
@@ -95,18 +121,18 @@ export const ProductsWrapper = ({ products }: IProdcutsWrapper): JSX.Element => 
                 const currentProduct = exportProducts.find(product => product.id === item.id);
                 if (currentProduct) {
                     return (
-                        <Link href={`${PRODUCTS}/${item.id}`} key={item.id}>
-                            <Box sx={styles.product}>
+                        <Fragment key={item.id}>
+                            <Box sx={styles.product} onClick={() => { handleRedirect(item.id) }}>
                                 <Box>
                                     <Typography sx={styles.productText}>{item.name.toUpperCase()}</Typography>
                                 </Box>
                                 <Box sx={styles.productInfoWrapper}>
                                     <Box sx={styles.counterWrapper}>
-                                        <PlayArrowIcon sx={styles.arrowUp} onClick={() => { handleAmountUp(currentProduct) }} />
+                                        <PlayArrowIcon sx={styles.arrowUp} onClick={(e) => { handleAmountUp(e, currentProduct) }} />
                                         <Box sx={styles.counter}>
                                             <Typography>{currentProduct.amount}</Typography>
                                         </Box>
-                                        <PlayArrowIcon sx={styles.arrowDown} onClick={() => { handleAmountDown(currentProduct) }} />
+                                        <PlayArrowIcon sx={styles.arrowDown} onClick={(e) => { handleAmountDown(e, currentProduct) }} />
                                     </Box>
                                     <Box sx={{
                                         ...styles.productImage,
@@ -114,7 +140,7 @@ export const ProductsWrapper = ({ products }: IProdcutsWrapper): JSX.Element => 
                                     }}></Box>
                                 </Box>
                             </Box>
-                        </Link>
+                        </Fragment>
                     )
                 }
             })}

@@ -12,7 +12,8 @@ export const styles = {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        paddingX: "42px"
+        paddingX: "42px",
+        cursor: "pointer"
     },
     productText: {
         fontWeight: 500,
