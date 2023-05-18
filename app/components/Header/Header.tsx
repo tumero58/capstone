@@ -47,6 +47,9 @@ const Header = ({ walletName, walletBalance }: IHeader) => {
     }, []);
 
     const handleNotificationClick = () => {
+        if (notifications.length === 0) {
+            return;
+        };
         setOpenNotification((state) => !state);
         notifications.forEach(async (item: {
             id: number,

@@ -41,19 +41,39 @@ export default function CreateProduct({ wallet }: ICreateProduct) {
     const [files, setFiles] = useState([]);
 
     const handleClick = async () => {
-        await createProduct(
-            name,
-            amount,
-            supplier,
-            bio,
-            buyPrice,
-            sellPrice,
-            maximumCapacity,
-            minimumAmount,
-            orderAutomation,
-            files,
-            wallet
-        );
+        if (
+            name.length !== 0 &&
+            Number(amount) !== 0 &&
+            Number(buyPrice) !== 0 &&
+            Number(sellPrice) !== 0 &&
+            Number(maximumCapacity) !== 0 &&
+            Number(minimumAmount) !== 0
+        ) {
+            if (Number(minimumAmount) <= Number(maximumCapacity)) {
+                if (Number(buyPrice) < Number(sellPrice)) {
+                    await createProduct(
+                        name,
+                        amount,
+                        supplier,
+                        bio,
+                        buyPrice,
+                        sellPrice,
+                        maximumCapacity,
+                        minimumAmount,
+                        orderAutomation,
+                        files,
+                        wallet
+                    );
+                } else {
+                    alert("Buy price is higher than sell price");
+                }
+            } else {
+                alert("Minimum amount is more than maximum");
+            }
+        } else {
+            alert("Please fill in the required fields");
+        }
+
     };
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, func: Function) => {
@@ -73,11 +93,11 @@ export default function CreateProduct({ wallet }: ICreateProduct) {
             <Header walletName={wallet.name} walletBalance={wallet.balance} />
             <Box sx={styles.wrapper}>
                 <Box sx={styles.input}>
-                    <Typography sx={styles.inputText}>Name</Typography>
+                    <Typography sx={styles.inputText}>Name *</Typography>
                     <Input onChange={(e) => { handleChange(e, setName) }} sx={styles.inputContent} />
                 </Box>
                 <Box sx={styles.input}>
-                    <Typography sx={styles.inputText}>Amount</Typography>
+                    <Typography sx={styles.inputText}>Amount *</Typography>
                     <Input type='number' onChange={(e) => { handleChange(e, setAmount) }} sx={styles.inputContent} />
                 </Box>
                 <Box sx={styles.input}>
@@ -89,19 +109,19 @@ export default function CreateProduct({ wallet }: ICreateProduct) {
                     <Input onChange={(e) => { handleChange(e, setBio) }} sx={styles.inputContent} />
                 </Box>
                 <Box sx={styles.input}>
-                    <Typography sx={styles.inputText}>Buy Price</Typography>
+                    <Typography sx={styles.inputText}>Buy Price *</Typography>
                     <Input type='number' onChange={(e) => { handleChange(e, setBuyPrice) }} sx={styles.inputContent} />
                 </Box>
                 <Box sx={styles.input}>
-                    <Typography sx={styles.inputText}>Sell Price</Typography>
+                    <Typography sx={styles.inputText}>Sell Price *</Typography>
                     <Input type='number' onChange={(e) => { handleChange(e, setSellPrice) }} sx={styles.inputContent} />
                 </Box>
                 <Box sx={styles.input}>
-                    <Typography sx={styles.inputText}>Maximum Capacity</Typography>
+                    <Typography sx={styles.inputText}>Maximum Capacity *</Typography>
                     <Input type='number' onChange={(e) => { handleChange(e, setMaximumCapacity) }} sx={styles.inputContent} />
                 </Box>
                 <Box sx={styles.input}>
-                    <Typography sx={styles.inputText}>Minimum Capacity</Typography>
+                    <Typography sx={styles.inputText}>Minimum Amount *</Typography>
                     <Input type='number' onChange={(e) => { handleChange(e, setMinimumAmount) }} sx={styles.inputContent} />
                 </Box>
                 <Box sx={styles.input}>
