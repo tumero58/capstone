@@ -30,5 +30,25 @@ export const styles = {
     },
     routeActive: {
         color: "#C0DDEF"
-    }
+    },
+    notificationWrapper: {
+        position: "relative",
+        cursor: "pointer"
+    },
+    notificationCircle: {
+        position: "absolute",
+        bottom: 0,
+        right: 0,
+        borderRadius: "50%",
+        width: "30px",
+        height: "30px",
+        backgroundColor: "red",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        transform: "translate(10px, 10px)",
+        ">p": {
+            color: "#FFF"
+        }
+    },
 }

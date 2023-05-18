@@ -179,6 +179,13 @@ export const ProductsWrapper = ({ products, wallet }: IProdcutsWrapper): JSX.Ele
                                                 }
                                             });
                                         }
+                                    } else {
+                                        const notifRes = await handleRequest(CREATE_NOTIFICATION_API, METHODS.POST, {
+                                            message: `Not enought money to purchase product: ${item.name}`
+                                        });
+                                        if (notifRes.id) {
+                                            await handleRequest(`${CMS_API}${CMS_PRODUCTS}/${item.id}`, METHODS.DELETE);
+                                        }
                                     }
                                 };
                             };
@@ -196,7 +203,7 @@ export const ProductsWrapper = ({ products, wallet }: IProdcutsWrapper): JSX.Ele
     const handleRedirect = (id: string) => {
         router.push(`${PRODUCTS}/${id}`);
     };
-    
+
     return (
         <Box>
             {openReceipt ?
