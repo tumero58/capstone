@@ -4,7 +4,7 @@ export const CREATE_PRODUCT = "/create-product";
 
 export const routes = [
     {
-        title: "Home",
+        title: "INXPORT",
         slug: "/"
     },
     {

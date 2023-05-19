@@ -101,7 +101,7 @@ export default function Product({
                     <Typography>{maximumCapacity}</Typography>
                 </Box>
                 <Box sx={UnitProductStyles.input}>
-                    <Typography sx={UnitProductStyles.inputText}>Minimum Capacity</Typography>
+                    <Typography sx={UnitProductStyles.inputText}>Minimum Amount</Typography>
                     <Typography>{minimumAmount}</Typography>
                 </Box>
                 <Box sx={UnitProductStyles.input}>

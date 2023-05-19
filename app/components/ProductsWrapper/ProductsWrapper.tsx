@@ -4,8 +4,7 @@ import { Box, Button, Typography } from "@mui/material";
 import { Fragment, useState } from "react";
 import { styles } from "./ProductsWrapper.styles";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import { CURRENCY, EXPORT, EXPORT_PRODUCTS_EMPTY_TEXT } from "@/constants/general";
-import Link from "next/link";
+import { AUTOMATED, EXPORT, EXPORT_PRODUCTS_EMPTY_TEXT } from "@/constants/general";
 import { PRODUCTS } from "@/constants/routes";
 import { useRouter } from "next/router";
 import { handleRequest, METHODS } from "@/utils/handleRequest";
@@ -245,6 +244,7 @@ export const ProductsWrapper = ({ products, wallet }: IProdcutsWrapper): JSX.Ele
                                 <Box sx={styles.product} onClick={() => { handleRedirect(item.id) }}>
                                     <Box>
                                         <Typography sx={styles.productText}>{item.name.toUpperCase()}: {item.amount}</Typography>
+                                        <Typography>{item.orderAutomation ? AUTOMATED : ""}</Typography>
                                     </Box>
                                     <Box sx={styles.productInfoWrapper}>
                                         <Box sx={styles.counterWrapper}>
